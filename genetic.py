@@ -3,8 +3,8 @@ import gutils
 import numpy as np
 
 class Genetic():  
-  def __init__(self, var_min, var_max, min_dist, size_pop=30, 
-               num_it=50, cross_rate=0.9, mut_rate=0.1, verbose=True):
+  def __init__(self, var_min, var_max, min_dist, size_pop=60, 
+               num_it=80, cross_rate=0.95, mut_rate=0.2, verbose=True):
     self.size_pop = size_pop
     self.num_it =  num_it
     self.cross_rate = cross_rate
