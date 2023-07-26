@@ -1,4 +1,4 @@
-# AG-Fuzzy ADR LoRaWAN
+# AG-Fuzzy to optimize LoRaWAN ADR
 - AG to generate database and rules for SIFs related to ADR in NS-3 simulator
 
 ## Input Vars:
