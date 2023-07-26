@@ -1,4 +1,5 @@
-# AG para gerar base de dados e regras de SIFs para ADR no NS-3
+# AG-FUZZy ADR LoRaWAN
+- AG para gerar base de dados e regras de SIFs para ADR no NS-3
 
 ## Vars de Entrada:
 1. SNR: [-5.5, 27.8] dBm; 3 conjuntos
