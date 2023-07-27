@@ -120,6 +120,67 @@ def fill_fll(vertexes, rules1, rules2, fll='fadr.fll'):
 			f'\trule: if snr is good then sf is {rules2[2]}\n'
 		)
 
+def fill_fll1(vertexes, fll='fadr.fll'):	
+	filename = \
+		f'{ns3_dir}/src/lorawan/examples/{fll}'
+	with open(filename, 'w') as file:
+		file.write(\
+			'Engine: FADR\n' +
+			'\tdescription: An Engine for ADR LoRaWAN\n' +
+			'InputVariable: snr\n'+
+			'\tdescription: Signal Noise Ratio\n'
+			'\tenabled: true\n'+
+			'\trange: -6.0  30.0\n'+
+			'\tlock-range: true\n'+
+			f'\tterm: poor       Triangle {vertexes[0]} {vertexes[1]} {vertexes[2]}\n'+
+			f'\tterm: acceptable Triangle {vertexes[3]} {vertexes[4]} {vertexes[5]}\n'+
+			f'\tterm: good       Triangle {vertexes[6]} {vertexes[7]} {vertexes[8]}\n'+
+			'OutputVariable: tp\n'+
+			'\tdescription: TP based on Mamdani inference\n'+
+			'\tenabled: true\n'+
+			'\trange:   2  14\n'+
+			'\tlock-range: false\n'+
+			'\taggregation: Maximum\n'+
+			'\tdefuzzifier: Centroid 10\n'+
+			'\tdefault: nan\n'+
+			'\tlock-previous: false\n'+
+			f'\tterm:  low      Triangle  {vertexes[9]}  {vertexes[10]} {vertexes[11]}\n'+
+			f'\tterm:  average  Triangle  {vertexes[12]} {vertexes[13]} {vertexes[14]}\n'+
+			f'\tterm:  high     Triangle  {vertexes[15]} {vertexes[16]} {vertexes[17]}\n'+
+			'OutputVariable: sf\n'+
+			'\tdescription: SF based on Mamdani inference\n'+
+			'\tenabled: true\n'+
+			'\trange: 7  12\n'+
+			'\tlock-range: false\n'+
+			'\taggregation: Maximum\n'+
+			'\tdefuzzifier: Centroid 10\n'+
+			'\tdefault: nan\n'+
+			'\tlock-previous: false\n'+
+			f'\tterm:  low     Triangle  {vertexes[18]} {vertexes[19]} {vertexes[20]}\n'+
+			f'\tterm:  average Triangle  {vertexes[21]} {vertexes[22]} {vertexes[23]}\n'+
+			f'\tterm:  high    Triangle  {vertexes[24]} {vertexes[25]} {vertexes[26]}\n'+
+			'RuleBlock: mamdani\n'+
+			'\tdescription: Mamdani Inference for TP\n'+
+			'\tenabled: true\n'+
+			'\tconjunction: Minimum\n'+
+			'\tdisjunction: Maximum\n'+
+			'\timplication: Minimum\n'+
+			'\tactivation: General\n'+
+			f'\trule: if snr is poor then tp is high\n'+
+			f'\trule: if snr is acceptable then tp is average\n'+
+			f'\trule: if snr is good then tp is low\n'+
+			'RuleBlock: mamdani\n'+
+			'\tdescription: Mamdani Inference for SF\n'+
+			'\tenabled: true\n'+
+			'\tconjunction: Minimum\n'+
+			'\tdisjunction: Maximum\n'+
+			'\timplication: Minimum\n'+
+			'\tactivation: General\n'+
+			f'\trule: if snr is poor then sf is high\n'+
+			f'\trule: if snr is acceptable then sf is average\n'+
+			f'\trule: if snr is good then sf is low\n'
+		)
+
 def log(data, log='log-genetic'):
 	filename = f'{ns3_dir}/{ag_dir}/results/{log}'
 	with open(filename, 'a+') as file:

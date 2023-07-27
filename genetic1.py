@@ -1,10 +1,10 @@
-from chromosome import Chromosome
+from chromosome1 import Chromosome
 import gutils
 import numpy as np
 
 class Genetic():  
-  def __init__(self, var_min, var_max, min_dist, size_pop=60, 
-               num_it=80, cross_rate=0.95, mut_rate=0.2, verbose=True):
+  def __init__(self, var_min, var_max, min_dist, size_pop=40, 
+               num_it=60, cross_rate=0.95, mut_rate=0.20, verbose=True):
     self.size_pop = size_pop
     self.num_it =  num_it
     self.cross_rate = cross_rate
@@ -58,14 +58,6 @@ class Genetic():
       offspring1.set_sf(father.sf_v[:point3], mother.sf_v[point3:], point3)
       offspring2.set_sf(mother.sf_v[:point3], father.sf_v[point3:], point3)
 
-      point4 = np.random.randint(0, len(father.rules01))
-      offspring1.set_rules01(father.rules01[:point4], mother.rules01[point4:])
-      offspring2.set_rules01(mother.rules01[:point4], father.rules01[point4:])
-
-      point5 = np.random.randint(0, len(father.rules02))
-      offspring1.set_rules02(father.rules02[:point5], mother.rules02[point5:])
-      offspring2.set_rules02(mother.rules02[:point5], father.rules02[point5:])
-
       offspring1.set_solution()
       offspring2.set_solution()
       return offspring1, offspring2
@@ -90,16 +82,6 @@ class Genetic():
       while gene == 0 or gene == len(chr.sf_v) - 1:
         gene = np.random.randint(0, len(chr.sf_v))
       chr.change_sf(gene)
-
-      gene = 0
-      while gene == 0 or gene == len(chr.rules01) - 1:
-        gene = np.random.randint(0, len(chr.rules01))
-      chr.change_rules01(gene)
-
-      gene = 0
-      while gene == 0 or gene == len(chr.rules02) - 1:
-        gene = np.random.randint(0, len(chr.rules02))
-      chr.change_rules02(gene)
     
     chr.set_solution()
 
@@ -197,7 +179,7 @@ class Genetic():
       print('*********************************************************************************************')
 
   def fn_fitness(self, p):
-    gutils.fill_fll(p.vertexes, p.rules01, p.rules02)
+    gutils.fill_fll1(p.vertexes)
     gutils.simulate()
     pdr, energy = gutils.calc()
     p.pdr = pdr
