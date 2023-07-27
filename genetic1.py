@@ -2,7 +2,7 @@ from chromosome1 import Chromosome
 import gutils
 import numpy as np
 
-class Genetic():  
+class Genetic1():  
   def __init__(self, var_min, var_max, min_dist, size_pop=40, 
                num_it=60, cross_rate=0.95, mut_rate=0.20, verbose=True):
     self.size_pop = size_pop
@@ -187,6 +187,6 @@ class Genetic():
     p.fitness = pdr
 
 if __name__ ==  '__main__':
-  g = Genetic([-5.5, 2, 7], [27.8, 14, 12], [1, 1, 1])
+  g = Genetic1([-5.5, 2, 7], [27.8, 14, 12], [1, 1, 1])
   g.print()
   g.execute()
