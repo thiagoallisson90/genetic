@@ -13,13 +13,25 @@ def calc_pdr(adr, num_reps=4, prefix='F'):
 	files = [f'{ns3_dir}/phyPerformance102{prefix}ADR-{i}.csv' for i in range(1, num_reps+1)]
 	x_s = [pd.read_csv(file)['received'].mean() for file in files]
 	adr['mean_pdr'] = np.mean(x_s)
-	
+
+# prefix={'F', ''}
+def calc_pdr_range(adr, prefix='F', n_runs=[96, 233, 239, 287]):
+	files = [f'{ns3_dir}/phyPerformance102{prefix}ADR-{i}.csv' for i in n_runs]
+	x_s = [pd.read_csv(file)['received'].mean() for file in files]
+	adr['mean_pdr'] = np.mean(x_s)
+
 # prefix={'component', 'fuzzy'}
-def calc_energy(adr, num_reps=4, prefix='fuzzy'):
-	files = [f'{ns3_dir}/battery-level-{prefix}-{i}.txt' for i in range(1, num_reps+1)]
+def calc_energy(adr, n_runs=[96, 233, 239, 287], prefix='fuzzy'):
+	files = [f'{ns3_dir}/battery-level-{prefix}-{i}.txt' for i in n_runs]
 	x_s = [(10000 - pd.read_csv(file, names=['num', 'energy'])['energy'].mean()) for file in files]
 	adr['mean_energy'] = np.mean(x_s)
 	
+# prefix={'component', 'fuzzy'}
+def calc_energy_range(adr, prefix='fuzzy', n_runs=[96, 233, 239, 287]):
+	files = [f'{ns3_dir}/battery-level-{prefix}-{i}.txt' for i in n_runs]
+	x_s = [(10000 - pd.read_csv(file, names=['num', 'energy'])['energy'].mean()) for file in files]
+	adr['mean_energy'] = np.mean(x_s)
+
 # adr_type={'ns3::AdrComponent', 'ns3::AdrFuzzy'}
 def execute(run, adr_type='ns3::AdrFuzzy'):
 	cmd = f"{ns3} run \"scenario102 --adrType={adr_type} --nDevices=136 --intervalTx=15 --nRun={run}\""
@@ -50,11 +62,31 @@ def simulate(num_reps=4, adr_type='ns3::AdrFuzzy'):
 
 	executor.shutdown()
 
+# adr_type={'ns3::AdrComponent', 'ns3::AdrFuzzy'}
+def simulate_range(adr_type='ns3::AdrFuzzy', n_runs = [96, 233, 239, 287]):
+	if len(n_runs) != 4:
+		print('Simulation can\'t be executed!')
+	else:
+		executor = concurrent.futures.ThreadPoolExecutor()
+		compile_now()
+		results = [executor.submit(execute, i, adr_type) for i in n_runs]
+		concurrent.futures.wait(results)
+		executor.shutdown()
+
 def calc(num_reps=4, prefix_pdr='F', prefix_energy='fuzzy'):
 	adr = {}
 	executor = concurrent.futures.ThreadPoolExecutor()
 	results = [executor.submit(calc_pdr, adr, num_reps, prefix_pdr), 
      executor.submit(calc_energy, adr, num_reps, prefix_energy)]
+	concurrent.futures.wait(results)
+	executor.shutdown()
+	return adr['mean_pdr'], adr['mean_energy']
+
+def calc_range(prefix_pdr='F', prefix_energy='fuzzy'):
+	adr = {}
+	executor = concurrent.futures.ThreadPoolExecutor()
+	results = [executor.submit(calc_pdr_range, adr, prefix_pdr), 
+     executor.submit(calc_energy_range, adr, prefix_energy)]
 	concurrent.futures.wait(results)
 	executor.shutdown()
 	return adr['mean_pdr'], adr['mean_energy']

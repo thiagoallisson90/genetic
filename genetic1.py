@@ -180,8 +180,8 @@ class Genetic1():
 
   def fn_fitness(self, p):
     gutils.fill_fll1(p.vertexes)
-    gutils.simulate()
-    pdr, energy = gutils.calc()
+    gutils.simulate_range()
+    pdr, energy = gutils.calc_range()
     p.pdr = pdr
     p.energy = energy
     p.fitness = pdr
