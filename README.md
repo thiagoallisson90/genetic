@@ -22,9 +22,16 @@
 - Crossover with five points: SNR, TP, SF, Rules1 (SNR - TP), Rules2 (SNR - SF)
 - Mutation applied for the five parts of chromosome
 
-## Exemple:
+## Examples:
 ```python
+from genetic import Genetic
 if __name__ ==  '__main__':
   g = Genetic([-5.5, 2, 7], [27.8, 14, 12], [1, 1, 1])
+  g.print()
+  g.execute()
+# OR
+from genetic1 import Genetic1
+if __name__ ==  '__main__':
+  g = Genetic1([-5.5, 2, 7], [27.8, 14, 12], [1, 1, 1])
   g.print()
   g.execute()
