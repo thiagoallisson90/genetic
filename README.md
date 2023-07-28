@@ -35,3 +35,7 @@ if __name__ ==  '__main__':
   g = Genetic1([-5.5, 2, 7], [27.8, 14, 12], [1, 1, 1])
   g.print()
   g.execute()
+# OR
+import nsga
+if __name__ == '__main__':
+  execute()
