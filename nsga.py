@@ -2,7 +2,7 @@
 import numpy as np
 from pymoo.core.problem import Problem
 from pymoo.algorithms.moo.nsga2 import NSGA2
-from pymoo.operators.crossover.pntx import TwoPointCrossover
+from pymoo.operators.crossover.pntx import PointCrossover
 from pymoo.operators.mutation.pm import PolynomialMutation
 from pymoo.optimize import minimize
 from pymoo.visualization.scatter import Scatter
@@ -22,9 +22,11 @@ xu_sf = [sf_max for _ in range(n_v)]
 xu = np.concatenate((xu_snr, xu_tp, xu_sf))
 
 min_d = 1
-pop_size = 80
+pop_size = 40
 n_var = 36
 n_obj = 2
+
+n_gen = 8
 
 def generate_vertexes(min_val, max_val, min_dist):
   coords = np.zeros(12)
@@ -184,18 +186,18 @@ def execute():
 
   problem = FuzzyProblem()
   algorithm = NSGA2(pop_size=pop_size, 
-                    mutation=PolynomialMutation(prob=0.2),
-                    crossover=TwoPointCrossover(prob=1.0),
+                    mutation=PolynomialMutation(prob=0.3),
+                    crossover=PointCrossover(n_points=4, prob=1.0),
                     eliminate_duplicates=True,
                     sampling=np.array(X))
 
   res = minimize(problem,
                 algorithm,
-                ('n_gen', 90),
+                ('n_gen', n_gen),
                 save_history=True,
                 verbose=True)
 
-  print('Solutions founded:')
+  print('Solutions found:')
   for solution in res.F:
     print(solution)
 
