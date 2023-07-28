@@ -159,7 +159,7 @@ def execute():
                 save_history=True,
                 verbose=True)
 
-  print('Solutions founded:')
+  print('Solutions found:')
   for solution in res.F:
     print(solution)
 
