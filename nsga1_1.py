@@ -32,48 +32,28 @@ def generate_vertexes(min_val, max_val, min_dist):
   coords[0] = min_val
   coords[11] = max_val
 
-  flag = True
-  while flag or coords[2] - coords[0] < min_dist:
-    coords[1:3] = np.random.uniform(coords[0], max_val, 2)
-    coords[0:3].sort()
-    flag = False
+  coords[1:11] = np.random.uniform(min_val, max_val, 10)
+  coords.sort()
 
-  flag = True
-  while flag or coords[5] - coords[3] < min_dist:
-    coords[3] = np.random.uniform(coords[0], coords[2])
-    coords[4:6] = np.random.uniform(coords[3], max_val, 2)
-    coords[3:6].sort()
-    flag = False
-  
-  flag = True
-  while flag or coords[8] - coords[6] < min_dist:
-    coords[6] = np.random.uniform(coords[0], coords[5])
-    coords[7:9] = np.random.uniform(coords[6], max_val, 2)
-    coords[6:9].sort()
-    flag = False
-  
-  flag = True
-  while flag or coords[11] - coords[9] < min_dist:
-    coords[9] = np.random.uniform(coords[0], coords[8])
-    coords[10] = np.random.uniform(coords[9], max_val)
-    coords[9:12].sort()
-    flag = False
-  
-  """if coords[5] <= coords[2]:
-    coords[5] = coords[6] + np.random.uniform(0.05, 0.25)
+  while coords[2] - coords[0] < min_dist:
+    coords[2] += np.random.uniform(0.05, 0.25)
+    coords[2] = min(max_val, coords[2])
+
+  while coords[5] - coords[3] < min_dist:
+    coords[5] += np.random.uniform(0.05, 0.25)
     coords[5] = min(max_val, coords[5])  
-
-  if coords[3] >= coords[6] and coords[5] <= coords[8]:
-    coords[3] = coords[2] - np.random.uniform(0.05, 0.25)
-    coords[3] = max(min_val, coords[3])
   
-  if coords[8] <= coords[5]:
-    coords[8] = coords[9] + np.random.uniform(0.05, 0.25)
-    coords[8] = min(max_val, coords[8])
-
-  if coords[6] >= coords[9]:
-    coords[6] = coords[5] - np.random.uniform(0.05, 0.25)
-    coords[6] = max(min_val, coords[6])"""
+  while coords[8] - coords[6] < min_dist:
+    coords[8] += np.random.uniform(0.05, 0.25)
+    coords[8] = min(max_val, coords[8])  
+    
+  while coords[11] - coords[9] < min_dist:
+    coords[9] -= np.random.uniform(0.05, 0.25)
+    coords[9] = max(min_val, coords[9])
+  
+  coords[3] = np.random.uniform(coords[0], coords[2])
+  coords[6] = np.random.uniform(coords[3], coords[5])
+  coords[9] = np.random.uniform(coords[6], coords[8])
 
   return coords
 
@@ -119,22 +99,6 @@ def check_v(v, min_val, max_val, min_dist):
   
   if v[9] > v[8]:
     v[9], v[8] = swap(v[9], v[8])
-
-  """if v[5] <= v[2]:
-    v[5] = v[6] + np.random.uniform(0.05, 0.25)
-    v[5] =  min(max_val, v[5])
-  
-  if v[3] >= v[6] and v[5] <= 8:
-    v[3] = v[2] - np.random.uniform(0.05, 0.25)
-    v[3] =  max(min_val, v[3])
-  
-  if v[8] <= v[5]:
-    v[8] = v[9] + np.random.uniform(0.05, 0.25)
-    v[8] = min(max_val, v[8])
-  
-  if v[6] >= v[9]:
-    v[6] = v[5] - np.random.uniform(0.05, 0.25)
-    v[6] = max(min_val, v[6])"""
 
 class FuzzyProblem(Problem):
   def __init__(self):
